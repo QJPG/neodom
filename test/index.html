@@ -3,10 +3,10 @@
 	<head>
 		<title></title>
 	</head>
-	<body>
+	<body class="neo bg('black'); load_css('https://fonts.googleapis.com/css?family=Ubuntu'); fg('white', 16, 'Ubuntu')">
 		<main>
-			<div class="neo print('your id is: ' + randi()); print(10 * 2); border('#f33446', 2)">
-				<p>test</p>
+			<div class="neo print('test'); border('#33aaff', sz(0.13, 'em'), sz(4, 'px'));">
+				<p class="neo subt('%', randi()); cpy();">Random Value is %</p>
 			</div>
 		</main>
 		<script src="../src/neodom.min.js"></script>
@@ -15,17 +15,70 @@
 			neodom_func(State.Singleton, 'print', 1, (msg) => {
 				console.log(msg);
 			});
-			neodom_func(State.Singleton, 'border', 2, (color, size) => {
+			neodom_func(State.Singleton, 'bg', 1, (color) => {
 				let dom = State.Singleton.dom;
 
 				if (dom instanceof HTMLElement) {
-					dom.style.borderColor = color;
-					dom.style.borderWidth = size + 'px';
+					dom.style.background = `${color}`;
 				}
-			})
+			});
+			neodom_func(State.Singleton, 'sz', 2, (size, format) => {
+				return `${size}${format}`;
+			});
+			neodom_func(State.Singleton, 'load_css', 1, (uri) => {
+				const link = document.createElement('link');
+				link.rel = "stylesheet";
+				link.type = "text/css";
+				link.href = uri;
+
+				document.head.appendChild(link);
+			});
+			neodom_func(State.Singleton, 'fg', 3, (color, size, font) => {
+				let dom = State.Singleton.dom;
+
+				if (dom instanceof HTMLElement) {
+					dom.style.color = `${color}`;
+					dom.style.fontSize = `${size}`;
+					dom.style.fontFamily = `${font}`;
+				}
+			});
+			neodom_func(State.Singleton, 'border', 3, (color, size, radius) => {
+				let dom = State.Singleton.dom;
+
+				if (dom instanceof HTMLElement) {
+					dom.style.border = `${size} solid ${color}`;
+					dom.style.borderRadius = `${radius}`;
+				}
+			});
 			neodom_func(State.Singleton, 'randi', 0, () => {
 				return Math.floor(Math.random() * 100);
-			})
+			});
+			neodom_func(State.Singleton, 'subt', 2, (key, value) => {
+				let dom = State.Singleton.dom;
+
+				if (dom instanceof HTMLElement) {
+					let innerOld = dom.innerText;
+					let innerNew = "";
+
+					for (let i = 0; i < innerOld.length; ++i) {
+						if (innerOld[i] == key) {
+							innerNew += value;
+						}
+
+						else innerNew += innerOld[i];
+					}
+
+					dom.innerText = innerNew;
+				}
+			});
+			neodom_func(State.Singleton, 'cpy', 0, () => {
+				let dom = State.Singleton.dom;
+
+				if (dom instanceof HTMLElement) {
+					const d = dom.cloneNode(true);
+					dom.parentNode.appendChild(d);
+				}
+			});
 			neodom_start(State.Singleton);
 		</script>
 	</body>
