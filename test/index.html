@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<main>
+			<div class="neo print('your id is: ' + randi()); print(10 * 2); border('#f33446', 2)">
+				<p>test</p>
+			</div>
+		</main>
+		<script src="../src/neodom.min.js"></script>
+		<script>
+			neodom_init();
+			neodom_func(State.Singleton, 'print', 1, (msg) => {
+				console.log(msg);
+			});
+			neodom_func(State.Singleton, 'border', 2, (color, size) => {
+				let dom = State.Singleton.dom;
+
+				if (dom instanceof HTMLElement) {
+					dom.style.borderColor = color;
+					dom.style.borderWidth = size + 'px';
+				}
+			})
+			neodom_func(State.Singleton, 'randi', 0, () => {
+				return Math.floor(Math.random() * 100);
+			})
+			neodom_start(State.Singleton);
+		</script>
+	</body>
+</html>
